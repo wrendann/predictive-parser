@@ -8,25 +8,57 @@
 #define MAX_STACK_SIZE 100
 #define MAX_SYMBOL_LENGTH 10
 char parsingTable[MAX_ROWS][MAX_COLS][MAX_LINE_LENGTH];
+char token[MAX_SYMBOL_LENGTH];
 %}
 
 whitespace [ \t]
+digit [0-9]
+digits ({digit}+)
+decimal_digits (.{digits})
+exponential (e[+-]?{digits})
+integer ({digits}{exponential}?)
+floating_point ({digits}{decimal_digits}?{exponential}?f?)
+str ("[^']")
+letter [a-zA-Z]
+l_or_d ({letter}|{digit})
+identifier ({letter}{l_or_d}*)
 %%
 
-
-[\n\r] {}
 {whitespace} {}
+[\n\r] {}
 <<EOF>> {return -1;}
-. {
-	for(int i = 1; i<MAX_COLS; i++)
-	{
-		if(strcmp(parsingTable[0][i], yytext)==0)
-			return 1;
-		if(strcmp(parsingTable[0][i], "~") == 0)
-			return 0;
-	}
-	return 0;
-}
+"+" {strcpy(token, yytext); return 1;}
+"-" {strcpy(token, yytext); return 1;}
+"∗" {strcpy(token, yytext); return 1;}
+"/" {strcpy(token, yytext); return 1;}
+:= {strcpy(token, yytext); return 1;}
+"=" {strcpy(token, yytext); return 1;}
+"<" {strcpy(token, yytext); return 1;}
+">" {strcpy(token, yytext); return 1;}
+"(" {strcpy(token, yytext); return 1;}
+")" {strcpy(token, yytext); return 1;}
+"{" {strcpy(token, yytext); return 1;}
+"}" {strcpy(token, yytext); return 1;}
+";" {strcpy(token, yytext); return 1;}
+and {strcpy(token, yytext); return 1;}
+else {strcpy(token, yytext); return 1;}
+end {strcpy(token, yytext); return 1;}
+then {strcpy(token, yytext); return 1;}
+while {strcpy(token, yytext); return 1;}
+not {strcpy(token, yytext); return 1;}
+or {strcpy(token, yytext); return 1;}
+print {strcpy(token, yytext); return 1;}
+prog {strcpy(token, yytext); return 1;}
+scan {strcpy(token, yytext); return 1;}
+if {strcpy(token, yytext); return 1;}
+int {strcpy(token, yytext); return 1;}
+do {strcpy(token, yytext); return 1;}
+float {strcpy(token, yytext); return 1;}
+{integer} {strcpy(token, "ic"); return 1;}
+{identifier} {strcpy(token, "id"); return 1;}
+{floating_point} {strcpy(token, "fc"); return 1;}
+{str} {strcpy(token, "str"); return 1;}
+. {return 0;}
 %%
 
 int yywrap(void) {return 1;}
@@ -130,27 +162,27 @@ int main()
 		int top = -1;
 		int accepted = 1;
 		addToStack(stack, &top, "$");
-		addToStack(stack, &top, "S");
+		addToStack(stack, &top, "P");
 		int result = -1;
 		while ((result = yylex()) >= 0)
 		{
 			if(result == 0)
 			{
-				printf("Tokenization error, %s not defined.\n", yytext);
+				printf("Tokenization error, not defined %s.\n", yytext);
 				accepted = 0;
 				break;
 			}
-			if(strcmp(yytext, "") == 0)
+			if(strcmp(token, "") == 0)
 				continue;
 			while(1)
 			{
-				if(strcmp(yytext, stack[top]) == 0)
+				if(strcmp(token, stack[top]) == 0)
 				{
 					top--;
 					break;
 				}
 				int A = findNonTerminal(parsingTable, stack[top], rowNum);
-				int b = findTerminal(parsingTable, yytext);
+				int b = findTerminal(parsingTable, token);
 				if(A == -1 || b == -1)
 				{
 					accepted = 0;
@@ -163,7 +195,7 @@ int main()
 				}
 				char rhs[MAX_LINE_LENGTH];
 				strcpy(rhs, parsingTable[A][b]);
-				printf("%s -> %s\n", lhs, rhs);
+				printf("%s %s -> %s\n", token, lhs, rhs);
 				addSymbolsToStack(stack, &top, rhs);
 			}
 			if(accepted == 0)

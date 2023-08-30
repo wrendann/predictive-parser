@@ -1,0 +1,58 @@
+FIRST
+P : prog
+DL : int float epsilon
+SL : id if while print scan epsilon
+D : int float
+TY : int float
+VL : id
+VL' : id epsilon
+S : id if while print scan
+ES : id
+IS : if
+WS : while
+IOS : print scan
+E : id ( ic fc
+BE : id not { ( ic fc
+IS' : end else
+PE : id str ( ic fc
+AE : id not { ( ic fc
+BE' : or epsilon
+NE : id not { ( ic fc
+AE' : and epsilon
+RE : id ( ic fc
+RE' : = < >
+T : id ( ic fc
+E'' : + -
+F : id ( ic fc
+T'' : ∗ / epsilon
+E' : + -
+T' : ∗ /
+FOLLOW
+P : $
+DL : end id if while print scan
+SL : end else
+D : end int float id if while print scan
+TY : id
+VL : ;
+VL' : ;
+S : end id if while print scan else
+ES : end id if while print scan else
+IS : end id if while print scan else
+WS : end id if while print scan else
+IOS : end id if while print scan else
+E : end ; id if then while do print scan } ) else = < > or and
+BE : then do }
+IS' : end id if while print scan else
+PE : end id if while print scan else
+AE : then do } or
+BE' : then do }
+NE : then do } or and
+AE' : then do } or
+RE : then do } or and
+RE' : then do } or and
+T : end ; id if then while do print scan } ) else = < > + - or and
+E'' : end ; id if then while do print scan } ) else = < > or and
+F : end ; id if then while do print scan } ) else = < > + - ∗ / or and
+T'' : end ; id if then while do print scan } ) else = < > + - or and
+E' : end ; id if then while do print scan } ) else = < > + - or and
+T' : end ; id if then while do print scan } ) else = < > + - ∗ / or and

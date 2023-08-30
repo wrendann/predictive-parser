@@ -1,0 +1,51 @@
+P -> prog DL SL end
+DL -> D DL
+DL -> epsilon
+D -> TY VL ;
+TY -> int
+TY -> float
+VL -> id VL'
+SL -> S SL
+SL -> epsilon
+S -> ES
+S -> IS
+S -> WS
+S -> IOS
+ES -> id := E ;
+IS -> if BE then SL IS'
+WS -> while BE do SL end
+IOS -> print PE
+IOS -> scan id
+PE -> E
+PE -> str
+BE -> AE BE'
+AE -> NE AE'
+NE -> not NE
+NE -> { BE }
+NE -> RE
+RE -> E RE'
+E -> T E''
+T -> F T''
+F -> ( E )
+F -> id
+F -> ic
+F -> fc
+VL' -> id VL'
+VL' -> epsilon
+IS' -> end
+IS' -> else SL end
+RE' -> = E
+RE' -> < E
+RE' -> > E
+E' -> + T
+E' -> - T
+T' -> ∗ F
+T' -> / F
+BE' -> or AE BE'
+BE' -> epsilon
+AE' -> and NE AE'
+AE' -> epsilon
+E'' -> E' E''
+E'' -> epsilon
+T'' -> T' T''
+T'' -> epsilon

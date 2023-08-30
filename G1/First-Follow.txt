@@ -1,6 +1,6 @@
 FIRST
 S : n
-B : n ε
+B : n epsilon
 A : + -
 FOLLOW
 S : $

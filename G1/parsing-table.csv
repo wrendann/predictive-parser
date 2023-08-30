@@ -1,4 +1,4 @@
-,ε,+,-,$,n
-S,,,,,n B
-A,,+,-,,
-B,ε,,,,n B A B
+,$,n,+,-
+B,epsilon,n B A B,epsilon,epsilon
+A,,,+,-
+S,,n B,,

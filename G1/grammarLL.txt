@@ -1,5 +1,5 @@
 S -> n B
 B -> n B A B
-B -> ε
+B -> epsilon
 A -> +
 A -> -
